@@ -21,7 +21,7 @@ def main():
     #     return
     
     mainstarttime = datetime.utcnow()
-    print(f'starting timer at {mainstarttime}')
+    print(f'starting timer at {mainstarttime.astimezone()}')
     intervals = [timedelta(minutes=5),timedelta(minutes=20),timedelta(minutes=60)]
     rhythm = len(intervals)
     currentinterval = 0
