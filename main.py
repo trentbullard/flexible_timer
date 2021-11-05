@@ -2,7 +2,7 @@ try:
     import sys
     import traceback
     import time
-    from datetime import datetime, timedelta
+    from datetime import datetime, timedelta, timezone
     from functools import reduce
 except ImportError as err:
     print(f"couldn't load module: {err}")
@@ -20,20 +20,21 @@ def main():
     #     argInfo()
     #     return
     
-    mainstarttime = datetime.utcnow()
+    mainstarttime = datetime.now(timezone.utc)
     print(f'starting timer at {mainstarttime.astimezone()}')
     intervals = [timedelta(minutes=5),timedelta(minutes=20),timedelta(minutes=60)]
     rhythm = len(intervals)
     currentinterval = 0
     breakdelta = timedelta(hours=3)
 
-    loopstarttime = datetime.utcnow()
+    loopstarttime = datetime.now(timezone.utc)
     loopdelta = loopstarttime - mainstarttime
     lastintervaltime = loopstarttime
+    print(f'completed interval {intervals[currentinterval]} at {loopstarttime.astimezone()} | prepare steamer')
     ping = True
     while loopdelta < breakdelta:
         time.sleep(.05)
-        loopstarttime = datetime.utcnow()
+        loopstarttime = datetime.now(timezone.utc)
         loopdelta = loopstarttime - mainstarttime
         if currentinterval >= rhythm:
             currentinterval = 0
