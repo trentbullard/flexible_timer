@@ -52,6 +52,7 @@ def main():
             print("")
             lastintervaltime = loopstarttime
             currentinterval += 1
+            continue
         
         if loopdelta.seconds % 300 == 0:
             if ping:
