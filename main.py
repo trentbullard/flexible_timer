@@ -4,6 +4,7 @@ try:
     import time
     from datetime import datetime, timedelta, timezone
     from functools import reduce
+    import winsound
 except ImportError as err:
     print(f"couldn't load module: {err}")
     sys.exit(2)
@@ -41,6 +42,7 @@ def main():
         
         timesincelastinterval = loopstarttime - lastintervaltime
         if timesincelastinterval > intervals[currentinterval]:
+            winsound.Beep(300, 100)
             print("")
             if currentinterval == 0:
                 print(f'completed interval {intervals[currentinterval]} at {loopstarttime.astimezone()} | start steaming')
