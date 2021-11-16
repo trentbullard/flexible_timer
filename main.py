@@ -14,6 +14,17 @@ except ImportError as err:
 #     print("none")
 
 
+def roundsecondsdt(dt):
+    some = 'thing'
+
+
+def roundsecondstd(td):
+    if td.microseconds < 500_000:
+        return timedelta(seconds=td.seconds)
+    else:
+        return timedelta(seconds=td.seconds+1)
+
+
 def main():
     # args = sys.argv[1:]
     # if args[0] == 'help':
@@ -31,7 +42,7 @@ def main():
     loopstarttime = datetime.now(timezone.utc)
     loopdelta = loopstarttime - mainstarttime
     lastintervaltime = loopstarttime
-    print(f'completed interval {intervals[currentinterval]} at {loopstarttime.astimezone()} | prepare steamer')
+    print(f'completed interval {intervals[currentinterval]} at {loopstarttime.astimezone().strftime("%X")} | prepare steamer')
     ping = True
     while loopdelta < breakdelta:
         time.sleep(.05)
@@ -42,24 +53,24 @@ def main():
         
         timesincelastinterval = loopstarttime - lastintervaltime
         if timesincelastinterval > intervals[currentinterval]:
-            winsound.Beep(400, 100)
+            winsound.Beep(400, 200)
             print("")
             if currentinterval == 0:
-                print(f'completed interval {intervals[currentinterval]} at {loopstarttime.astimezone()} | start steaming')
+                print(f'completed interval {intervals[currentinterval]} at {loopstarttime.astimezone().strftime("%X")} | start steaming')
             elif currentinterval == 1:
-                print(f'completed interval {intervals[currentinterval]} at {loopstarttime.astimezone()} | vent steamer')
+                print(f'completed interval {intervals[currentinterval]} at {loopstarttime.astimezone().strftime("%X")} | vent steamer')
             elif currentinterval == 2:
-                print(f'completed interval {intervals[currentinterval]} at {loopstarttime.astimezone()} | prepare steamer')
+                print(f'completed interval {intervals[currentinterval]} at {loopstarttime.astimezone().strftime("%X")} | prepare steamer')
             else:
-                print(f'completed interval {intervals[currentinterval]} at {loopstarttime.astimezone()}')
+                print(f'completed interval {intervals[currentinterval]} at {loopstarttime.astimezone().strftime("%X")}')
             print("")
             lastintervaltime = loopstarttime
             currentinterval += 1
             continue
         
-        if loopdelta.seconds % 300 == 0:
+        if loopdelta.seconds % 5 == 0:
             if ping:
-                print(f'current time: {loopstarttime.astimezone()} | runtime: {loopdelta} | current interval: {currentinterval+1} | time since last interval: {timesincelastinterval}')
+                print(f'current time: {loopstarttime.astimezone().strftime("%X")} | runtime: {roundsecondstd(loopdelta)} | current interval: {currentinterval+1} | time since last interval: {roundsecondstd(timesincelastinterval)}')
                 ping = False
                 loopdelta = timedelta(seconds=1)
         else:
