@@ -68,7 +68,7 @@ def main():
             currentinterval += 1
             continue
         
-        if loopdelta.seconds % 5 == 0:
+        if loopdelta.seconds % 300 == 0:
             if ping:
                 print(f'current time: {loopstarttime.astimezone().strftime("%X %p")} | runtime: {roundsecondstd(loopdelta)} | current interval: {currentinterval+1} | time since last interval: {roundsecondstd(timesincelastinterval)}')
                 ping = False
