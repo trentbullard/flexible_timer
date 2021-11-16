@@ -42,7 +42,7 @@ def main():
         
         timesincelastinterval = loopstarttime - lastintervaltime
         if timesincelastinterval > intervals[currentinterval]:
-            winsound.Beep(300, 100)
+            winsound.Beep(400, 100)
             print("")
             if currentinterval == 0:
                 print(f'completed interval {intervals[currentinterval]} at {loopstarttime.astimezone()} | start steaming')
@@ -62,7 +62,6 @@ def main():
                 print(f'current time: {loopstarttime.astimezone()} | runtime: {loopdelta} | current interval: {currentinterval+1} | time since last interval: {timesincelastinterval}')
                 ping = False
                 loopdelta = timedelta(seconds=1)
-        
         else:
             ping = True
 
