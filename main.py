@@ -77,7 +77,7 @@ def main():
             currentinterval += 1
             continue
         
-        if loopdelta.seconds % 3 == 0:
+        if loopdelta.seconds % 300 == 0:
             if ping:
                 print(f'({loopstarttime.astimezone().strftime("%X %p")}) {interval["action"]} has been running for {roundsecondstd(timesincelastinterval)} | {interval["startmessage"]}')
                 ping = False
