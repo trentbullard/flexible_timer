@@ -33,8 +33,24 @@ def main():
     #     return
     
     mainstarttime = datetime.now(timezone.utc)
-    print(f'starting timer at {mainstarttime.astimezone()}')
-    intervals = [timedelta(minutes=5),timedelta(minutes=20),timedelta(minutes=60)]
+    print(f'({mainstarttime.astimezone().strftime("%X %p")}) main timer starting')
+    intervals = [
+        {
+            'action': 'PREP',
+            'startmessage': 'prepare steamer',
+            'duration': timedelta(minutes=5)
+        },
+        {
+            'action': 'STEAM',
+            'startmessage': 'start steaming',
+            'duration': timedelta(minutes=20)
+        },
+        {
+            'action': 'VENT',
+            'startmessage': 'vent steamer',
+            'duration': timedelta(minutes=20)
+        },
+    ]
     rhythm = len(intervals)
     currentinterval = 0
     breakdelta = timedelta(hours=3)
@@ -42,39 +58,35 @@ def main():
     loopstarttime = datetime.now(timezone.utc)
     loopdelta = loopstarttime - mainstarttime
     lastintervaltime = loopstarttime
-    print(f'completed interval {intervals[currentinterval]} at {loopstarttime.astimezone().strftime("%X %p")} | prepare steamer')
+    interval = intervals[currentinterval]
+    print(f'({loopstarttime.astimezone().strftime("%X %p")}) {interval["action"]} starting | {interval["startmessage"]}')
     ping = True
     while loopdelta < breakdelta:
         time.sleep(.05)
         loopstarttime = datetime.now(timezone.utc)
         loopdelta = loopstarttime - mainstarttime
-        if currentinterval >= rhythm:
-            currentinterval = 0
         
+        interval = intervals[currentinterval]
         timesincelastinterval = loopstarttime - lastintervaltime
-        if timesincelastinterval > intervals[currentinterval]:
+        if timesincelastinterval > interval['duration']:
             winsound.Beep(400, 200)
             print("")
-            if currentinterval == 0:
-                print(f'completed interval {intervals[currentinterval]} at {loopstarttime.astimezone().strftime("%X %p")} | start steaming')
-            elif currentinterval == 1:
-                print(f'completed interval {intervals[currentinterval]} at {loopstarttime.astimezone().strftime("%X %p")} | vent steamer')
-            elif currentinterval == 2:
-                print(f'completed interval {intervals[currentinterval]} at {loopstarttime.astimezone().strftime("%X %p")} | prepare steamer')
-            else:
-                print(f'completed interval {intervals[currentinterval]} at {loopstarttime.astimezone().strftime("%X %p")}')
+            print(f'({loopstarttime.astimezone().strftime("%X %p")}) {interval["action"]} completed | {intervals[currentinterval+1]["startmessage"]}')
             print("")
             lastintervaltime = loopstarttime
             currentinterval += 1
             continue
         
-        if loopdelta.seconds % 300 == 0:
+        if loopdelta.seconds % 3 == 0:
             if ping:
-                print(f'current time: {loopstarttime.astimezone().strftime("%X %p")} | runtime: {roundsecondstd(loopdelta)} | current interval: {currentinterval+1} | time since last interval: {roundsecondstd(timesincelastinterval)}')
+                print(f'({loopstarttime.astimezone().strftime("%X %p")}) {interval["action"]} has been running for {roundsecondstd(timesincelastinterval)} | {interval["startmessage"]}')
                 ping = False
                 loopdelta = timedelta(seconds=1)
         else:
             ping = True
+
+        if currentinterval >= rhythm:
+            currentinterval = 0
 
 
 if __name__ == '__main__':
