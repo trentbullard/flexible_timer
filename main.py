@@ -38,7 +38,7 @@ def main():
         {
             'action': 'PREP',
             'startmessage': 'prepare steamer',
-            'duration': timedelta(minutes=5)
+            'duration': timedelta(minutes=7)
         },
         {
             'action': 'STEAM',
@@ -48,12 +48,12 @@ def main():
         {
             'action': 'VENT',
             'startmessage': 'vent steamer',
-            'duration': timedelta(minutes=20)
+            'duration': timedelta(minutes=60)
         },
     ]
     rhythm = len(intervals)-1
     currentinterval = 0
-    breakdelta = timedelta(hours=3)
+    breakdelta = timedelta(hours=5)
 
     loopstarttime = datetime.now(timezone.utc)
     loopdelta = loopstarttime - mainstarttime
