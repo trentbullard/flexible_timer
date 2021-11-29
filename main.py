@@ -51,7 +51,7 @@ def main():
             'duration': timedelta(minutes=20)
         },
     ]
-    rhythm = len(intervals)
+    rhythm = len(intervals)-1
     currentinterval = 0
     breakdelta = timedelta(hours=3)
 
@@ -71,10 +71,10 @@ def main():
         if timesincelastinterval > interval['duration']:
             winsound.Beep(400, 200)
             print("")
-            print(f'({loopstarttime.astimezone().strftime("%X %p")}) {interval["action"]} completed | {intervals[currentinterval+1]["startmessage"]}')
+            print(f'({loopstarttime.astimezone().strftime("%X %p")}) {interval["action"]} completed | {intervals[currentinterval+1 if currentinterval < rhythm else 0]["startmessage"]}')
             print("")
             lastintervaltime = loopstarttime
-            currentinterval += 1
+            currentinterval = currentinterval+1 if currentinterval < rhythm else 0
             continue
         
         if loopdelta.seconds % 300 == 0:
@@ -84,9 +84,6 @@ def main():
                 loopdelta = timedelta(seconds=1)
         else:
             ping = True
-
-        if currentinterval >= rhythm:
-            currentinterval = 0
 
 
 if __name__ == '__main__':
